@@ -9,11 +9,24 @@
         </div>
     @endif
 
-    <form action="{{ route('posts.store') }}" method="post">
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    <form action="{{ route('posts.store') }}" method="post" enctype="multipart/form-data">
         @csrf
 
         <label for="title">Title</label>
         <input type="text" name="title" id="title" class="form-control">
+
+        <label for="img">Img</label>
+        <input type="file" name="img" id="img" class="form-control">
 
         <label for="describe" class="mt-3">Describe</label>
         <textarea name="describe" id="describe" cols="30" rows="10" class="form-control"></textarea>

@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 
 class PostController extends Controller
 {
     const PATH_VIEW = 'posts.';
+    const PATH_UPLOAD = 'posts';
 
     /**
      * Display a listing of the resource.
@@ -32,7 +35,26 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        Post::query()->create($request->all());
+        $request->validate([
+            'title' => 'required|unique:posts|max:50',
+            'img' => 'nullable|image|max:1024',
+            'describe' => 'nullable',
+            'status' => [
+                'required',
+                Rule::in([
+                    Post::STATUS_DRAFT,
+                    Post::STATUS_PUBLISHED,
+                ])
+            ],
+        ]);
+
+        $data = $request->except('img');
+
+        if ($request->hasFile('img')) {
+            $data['img'] = Storage::put(self::PATH_UPLOAD, $request->file('img'));
+        }
+
+        Post::query()->create($data);
 
         return back()->with('msg', 'Thao tác thành công');
     }
@@ -58,7 +80,37 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        $post->update($request->all());
+        $request->validate([
+//            'title' => 'required|max:50|unique:posts,title,' . $post->id,
+            'title' => [
+                'required',
+                'max:50',
+                Rule::unique('posts')->ignore($post->id)
+            ],
+            'img' => 'nullable|image|max:1024',
+            'describe' => 'nullable',
+            'status' => [
+                'required',
+                Rule::in([
+                    Post::STATUS_DRAFT,
+                    Post::STATUS_PUBLISHED,
+                ])
+            ],
+        ]);
+
+        $data = $request->except('img');
+
+        if ($request->hasFile('img')) {
+            $data['img'] = Storage::put(self::PATH_UPLOAD, $request->file('img'));
+        }
+
+        $oldPathImg = $post->img;
+
+        $post->update($data);
+
+        if ($request->hasFile('img')) {
+            Storage::delete($oldPathImg);
+        }
 
         return back()->with('msg', 'Thao tác thành công');
     }
@@ -69,6 +121,10 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
         $post->delete();
+
+        if (Storage::exists($post->img)) {
+            Storage::delete($post->img);
+        }
 
         return back()->with('msg', 'Thao tác thành công');
     }

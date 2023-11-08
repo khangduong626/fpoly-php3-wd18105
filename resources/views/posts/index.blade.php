@@ -27,7 +27,7 @@
                 <td>{{ $item->id }}</td>
                 <td>{{ $item->title }}</td>
                 <td>
-                    <img src="{{ asset($item->img) }}" alt="" width="100px">
+                    <img src="{{ \Storage::url($item->img) }}" alt="" width="100px">
                 </td>
                 <td>{{ $item->status }}</td>
                 <td>
