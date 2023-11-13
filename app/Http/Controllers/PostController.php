@@ -108,7 +108,7 @@ class PostController extends Controller
 
         $post->update($data);
 
-        if ($request->hasFile('img')) {
+        if ($request->hasFile('img') && Storage::exists($post->img)) {
             Storage::delete($oldPathImg);
         }
 
