@@ -18,4 +18,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::view('master', 'layouts.master');
+Route::view('admin/dashboard', 'admin.dashboard');
+
 Route::resource('posts', PostController::class);
