@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Admin\BrandController;
+use App\Http\Controllers\Admin\CarController;
 use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
 
@@ -18,7 +20,14 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::view('master', 'layouts.master');
-Route::view('admin/dashboard', 'admin.dashboard');
 
-Route::resource('posts', PostController::class);
+
+Route::prefix('admin')
+    ->as('admin.')
+    ->group(function () {
+        Route::view('dashboard', 'admin.dashboard')->name('dashboard');
+
+        Route::resource('brands', BrandController::class);
+        Route::resource('cars', CarController::class);
+    });
+

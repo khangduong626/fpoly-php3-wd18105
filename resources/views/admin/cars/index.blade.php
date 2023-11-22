@@ -6,13 +6,13 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-sm-6">
-                        <h3 class="mb-0">Brand</h3>
+                        <h3 class="mb-0">Car</h3>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-end">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
                             <li class="breadcrumb-item active" aria-current="page">
-                                Brand
+                                Car
                             </li>
                         </ol>
                     </div>
@@ -26,7 +26,7 @@
                         <div class="card card-primary card-outline mb-4">
                             <div class="card-header" style="display:flex; justify-content: space-around">
                                 <div class="card-title">Danh sách</div>
-                                <a href="{{ route('admin.brands.create') }}" class="btn btn-info">Thêm mới</a>
+                                <a href="{{ route('admin.cars.create') }}" class="btn btn-info">Thêm mới</a>
                             </div>
 
                             <div class="card-body">
@@ -40,8 +40,8 @@
                                     <tr>
                                         <th>ID</th>
                                         <th>Name</th>
-                                        <th>Img</th>
-                                        <th>Is Show</th>
+                                        <th>Img Thumbnail</th>
+                                        <th>Brand</th>
                                         <th>Action</th>
                                     </tr>
 
@@ -50,21 +50,23 @@
                                             <td>{{ $item->id }}</td>
                                             <td>{{ $item->name }}</td>
                                             <td>
-                                                <img src="{{ \Storage::url($item->img) }}" alt="" width="100px">
+                                                <img src="{{ \Storage::url($item->img_thumbnail) }}" alt=""
+                                                     width="100px">
                                             </td>
                                             <td>
-                                                {{ $item->is_show ? 'Show' : 'Hide' }}
+                                                {{ $item->brand->name }}
                                             </td>
                                             <td>
-                                                <a href="{{ route('admin.brands.edit', $item) }}" class="btn btn-primary">Sửa</a>
+                                                <a href="{{ route('admin.cars.edit', $item) }}" class="btn btn-primary">Sửa</a>
 
-                                                <form action="{{ route('admin.brands.destroy', $item) }}" method="post">
+                                                <form action="{{ route('admin.cars.destroy', $item) }}" method="post">
                                                     @csrf
                                                     @method('DELETE')
 
                                                     <button type="submit"
                                                             onclick="return confirm('OK CHƯA?')"
-                                                            class="btn btn-danger">Xóa</button>
+                                                            class="btn btn-danger">Xóa
+                                                    </button>
                                                 </form>
                                             </td>
                                         </tr>

@@ -6,13 +6,13 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-sm-6">
-                        <h3 class="mb-0">Brand</h3>
+                        <h3 class="mb-0">Car</h3>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-end">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
                             <li class="breadcrumb-item active" aria-current="page">
-                                Brand
+                                Car
                             </li>
                         </ol>
                     </div>
@@ -45,25 +45,29 @@
                                     </div>
                                 @endif
 
-                                <form action="{{ route('admin.brands.store') }}" method="post"
+                                <form action="{{ route('admin.cars.store') }}" method="post"
                                       enctype="multipart/form-data">
                                     @csrf
 
                                     <label for="name">Name</label>
                                     <input type="text" name="name" id="name" class="form-control">
 
-                                    <label for="img">Img</label>
-                                    <input type="file" name="img" id="img" class="form-control">
-
-                                    <label for="is_show">Is Show</label>
-                                    <select name="is_show" id="is_show" class="form-control">
-                                        <option value="1">Show</option>
-                                        <option value="0">Hide</option>
+                                    <label for="brand_id">Brand</label>
+                                    <select name="brand_id" id="brand_id" class="form-control">
+                                        @foreach($brands as $id => $name)
+                                            <option value="{{ $id }}">{{ $id . ' - ' . $name }}</option>
+                                        @endforeach
                                     </select>
+
+                                    <label for="img_thumbnail">Img thumbnail</label>
+                                    <input type="file" name="img_thumbnail" id="img_thumbnail" class="form-control">
+
+                                    <label for="describe">Describe</label>
+                                    <textarea name="describe" id="describe" class="form-control"></textarea>
 
                                     <br>
 
-                                    <a href="{{ route('admin.brands.index') }}" class="btn btn-primary">Về trang
+                                    <a href="{{ route('admin.cars.index') }}" class="btn btn-primary">Về trang
                                         list</a>
                                     <button type="submit" class="btn btn-primary">Submit</button>
                                 </form>

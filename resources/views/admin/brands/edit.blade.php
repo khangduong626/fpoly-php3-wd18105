@@ -25,7 +25,7 @@
                     <div class="col-md-12">
                         <div class="card card-primary card-outline mb-4">
                             <div class="card-header">
-                                <div class="card-title">Tạo mới</div>
+                                <div class="card-title">Sửa: {{ $brand->name }}</div>
                             </div>
 
                             <div class="card-body">
@@ -45,26 +45,28 @@
                                     </div>
                                 @endif
 
-                                <form action="{{ route('admin.brands.store') }}" method="post"
+                                <form action="{{ route('admin.brands.update', $brand) }}" method="post"
                                       enctype="multipart/form-data">
                                     @csrf
+                                    @method('PUT')
 
                                     <label for="name">Name</label>
-                                    <input type="text" name="name" id="name" class="form-control">
+                                    <input type="text" name="name" id="name" class="form-control" value="{{ $brand->name }}">
 
                                     <label for="img">Img</label>
                                     <input type="file" name="img" id="img" class="form-control">
+                                    <img src="{{ \Storage::url($brand->img) }}" alt="" width="100px">
 
+                                    <br>
                                     <label for="is_show">Is Show</label>
                                     <select name="is_show" id="is_show" class="form-control">
-                                        <option value="1">Show</option>
-                                        <option value="0">Hide</option>
+                                        <option @if($brand->is_show) selected @endif value="1">Show</option>
+                                        <option @if(!$brand->is_show) selected @endif value="0">Hide</option>
                                     </select>
 
                                     <br>
 
-                                    <a href="{{ route('admin.brands.index') }}" class="btn btn-primary">Về trang
-                                        list</a>
+                                    <a href="{{ route('admin.brands.index') }}" class="btn btn-primary">Về trang list</a>
                                     <button type="submit" class="btn btn-primary">Submit</button>
                                 </form>
                             </div>

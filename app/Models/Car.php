@@ -5,13 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Brand extends Model
+class Car extends Model
 {
     use HasFactory;
 
     protected $fillable = [
+        'brand_id',
         'name',
-        'img',
-        'is_show',
+        'img_thumbnail',
+        'describe',
     ];
+
+    public function brand()
+    {
+        return $this->belongsTo(Brand::class);
+    }
 }
